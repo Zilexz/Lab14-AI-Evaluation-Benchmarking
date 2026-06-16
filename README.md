@@ -72,6 +72,27 @@ python check_lab.py
 
 ---
 
+## 🧱 Kiến trúc đã triển khai (NovaCloud Support Agent)
+
+| Thành phần | File | Mô tả |
+|---|---|---|
+| Knowledge Base | `data/knowledge_base.py` | 24 tài liệu + 12 red-team case (nguồn sự thật, có ID để tính Hit Rate) |
+| SDG | `data/synthetic_gen.py` | Sinh 60 golden case có Ground Truth IDs |
+| RAG Agent V1/V2 | `agent/main_agent.py` | V1 overlap thô · V2 TF-IDF + rerank + abstention |
+| Retrieval Eval | `engine/retrieval_eval.py` | Hit Rate@k & MRR (bỏ qua case không có ground-truth) |
+| RAGAS Evaluator | `engine/evaluator.py` | faithfulness · relevancy · abstention |
+| Multi-Judge | `engine/llm_judge.py` | 2 judge + tiebreaker, agreement, Cohen's Kappa, position-bias |
+| Async Runner | `engine/runner.py` | chạy song song theo batch, đo latency/cost/token |
+| LLM Client | `engine/llm_client.py` | OpenAI-compatible + fallback offline + bảng giá |
+| Orchestrator | `main.py` | Regression V1↔V2 + Release Gate + clustering + reports |
+
+### Chế độ chạy
+- **OFFLINE (mặc định):** không cần API key — judges & generation chạy heuristic deterministic, **vẫn ra đủ report**. Tái lập 100%.
+- **LIVE (model thật):** copy `.env.example` → `.env`, điền `OPENAI_API_KEY` (hỗ trợ cả endpoint tương thích OpenAI: FPT AI Marketplace / OpenRouter). Pipeline tự động chuyển sang gọi model thật, không đổi code.
+
+> ⚠️ `.gitignore` đang loại `reports/` và `data/golden_set.jsonl`. Khi **nộp bài** theo checklist,
+> hãy force-add report: `git add -f reports/summary.json reports/benchmark_results.json` (hoặc gỡ dòng tương ứng trong `.gitignore`).
+
 ## ⚠️ Lưu ý quan trọng
 - **Bắt buộc** chạy `python data/synthetic_gen.py` trước để tạo file `data/golden_set.jsonl`. File này không được commit sẵn trong repo.
 - Trước khi nộp bài, hãy chạy `python check_lab.py` để đảm bảo định dạng dữ liệu đã chuẩn. Bất kỳ lỗi định dạng nào dẫn đến việc script chấm điểm tự động không chạy được sẽ bị trừ 5 điểm thủ tục.

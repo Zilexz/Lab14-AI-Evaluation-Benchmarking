@@ -1,0 +1,25 @@
+{
+  "metadata": {
+    "version": "v1",
+    "total": 60,
+    "eval_mode": "live",
+    "wall_time_sec": 36.7,
+    "timestamp": "2026-06-16 16:13:23"
+  },
+  "metrics": {
+    "avg_score": 4.575,
+    "pass_rate": 0.917,
+    "hit_rate": 0.982,
+    "mrr": 0.93,
+    "agreement_rate": 0.929,
+    "cohen_kappa": 0.395,
+    "faithfulness": 0.878,
+    "relevancy": 0.525,
+    "abstention_accuracy": 0.4,
+    "avg_latency": 1.1629,
+    "judge_conflict_rate": 0.033,
+    "total_cost_usd": 0.055457,
+    "cost_per_eval_usd": 0.00092428,
+    "total_tokens": 44084
+  }
+}

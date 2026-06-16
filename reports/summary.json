@@ -1,0 +1,160 @@
+{
+  "metadata": {
+    "version": "v2",
+    "total": 60,
+    "eval_mode": "live",
+    "wall_time_sec": 37.84,
+    "timestamp": "2026-06-16 16:14:02"
+  },
+  "metrics": {
+    "avg_score": 4.742,
+    "pass_rate": 0.983,
+    "hit_rate": 0.982,
+    "mrr": 0.964,
+    "agreement_rate": 0.938,
+    "cohen_kappa": 0.398,
+    "faithfulness": 0.941,
+    "relevancy": 0.541,
+    "abstention_accuracy": 1.0,
+    "avg_latency": 1.0026,
+    "judge_conflict_rate": 0.033,
+    "total_cost_usd": 0.055758,
+    "cost_per_eval_usd": 0.00092929,
+    "total_tokens": 47566
+  },
+  "retrieval_eval": {
+    "v1": {
+      "avg_hit_rate": 0.9818181818181818,
+      "avg_mrr": 0.9303030303030303,
+      "evaluated_cases": 55,
+      "skipped_no_ground_truth": 5
+    },
+    "v2": {
+      "avg_hit_rate": 0.9818181818181818,
+      "avg_mrr": 0.9636363636363636,
+      "evaluated_cases": 55,
+      "skipped_no_ground_truth": 5
+    }
+  },
+  "regression": {
+    "baseline": "Agent_V1_Base",
+    "candidate": "Agent_V2_Optimized",
+    "metrics": {
+      "avg_score": {
+        "v1": 4.575,
+        "v2": 4.742,
+        "delta": 0.167
+      },
+      "pass_rate": {
+        "v1": 0.917,
+        "v2": 0.983,
+        "delta": 0.066
+      },
+      "hit_rate": {
+        "v1": 0.982,
+        "v2": 0.982,
+        "delta": 0.0
+      },
+      "mrr": {
+        "v1": 0.93,
+        "v2": 0.964,
+        "delta": 0.034
+      },
+      "agreement_rate": {
+        "v1": 0.929,
+        "v2": 0.938,
+        "delta": 0.009
+      },
+      "cohen_kappa": {
+        "v1": 0.395,
+        "v2": 0.398,
+        "delta": 0.003
+      },
+      "faithfulness": {
+        "v1": 0.878,
+        "v2": 0.941,
+        "delta": 0.063
+      },
+      "relevancy": {
+        "v1": 0.525,
+        "v2": 0.541,
+        "delta": 0.016
+      },
+      "abstention_accuracy": {
+        "v1": 0.4,
+        "v2": 1.0,
+        "delta": 0.6
+      },
+      "avg_latency": {
+        "v1": 1.1629,
+        "v2": 1.0026,
+        "delta": -0.1603
+      },
+      "cost_per_eval_usd": {
+        "v1": 0.00092428,
+        "v2": 0.00092929,
+        "delta": 5e-06
+      }
+    }
+  },
+  "release_gate": {
+    "approved": true,
+    "checks": [
+      {
+        "name": "Quality (avg_score không giảm)",
+        "pass": true,
+        "detail": "4.575 -> 4.742"
+      },
+      {
+        "name": "Pass rate không giảm",
+        "pass": true,
+        "detail": "0.917 -> 0.983"
+      },
+      {
+        "name": "Retrieval không regress (hit_rate >= cũ - 0.02)",
+        "pass": true,
+        "detail": "0.982 -> 0.982"
+      },
+      {
+        "name": "Judge reliability (agreement >= 0.6)",
+        "pass": true,
+        "detail": "agreement=0.938, kappa=0.398"
+      },
+      {
+        "name": "Cost không tăng quá 50%",
+        "pass": true,
+        "detail": "9.24e-04 -> 9.29e-04"
+      }
+    ]
+  },
+  "failure_clusters": {
+    "Khác (điểm judge thấp)": {
+      "count": 1,
+      "case_ids": [
+        "case_057"
+      ]
+    }
+  },
+  "position_bias_audit": {
+    "tested": 1,
+    "biased": 0,
+    "bias_rate": 0.0
+  },
+  "v1_metrics": {
+    "avg_score": 4.575,
+    "pass_rate": 0.917,
+    "hit_rate": 0.982,
+    "mrr": 0.93,
+    "agreement_rate": 0.929,
+    "cohen_kappa": 0.395,
+    "faithfulness": 0.878,
+    "relevancy": 0.525,
+    "abstention_accuracy": 0.4,
+    "avg_latency": 1.1629,
+    "judge_conflict_rate": 0.033,
+    "total_cost_usd": 0.055457,
+    "cost_per_eval_usd": 0.00092428,
+    "total_tokens": 44084
+  },
+  "cost_optimization_note": "Giảm ~30% chi phí eval: (1) cache câu trả lời judge theo hash(answer); (2) chỉ gọi judge thứ 3 khi conflict (đã làm); (3) dùng model rẻ (gpt-4o-mini) cho case 'easy', model mạnh chỉ cho case 'hard'."
+}
